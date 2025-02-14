@@ -12,7 +12,7 @@ Mini Chess is a simplified version of chess played on a 5x5 board. This implemen
 5. Follow the on-screen prompts to play the game.
 
 ## Game Output
-The game generates an output file named `minichessoutput.txt` in the same directory. This file contains a log of all moves and board states throughout the game.
+The game generates an output file named `minichessoutput1.txt` in the same directory. This file contains a log of all moves and board states throughout the game.
 
 ## New Classes/Functions
 - `MiniChess`: Main class containing all game logic
