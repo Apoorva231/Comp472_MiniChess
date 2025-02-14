@@ -19,6 +19,8 @@ The game generates an output file named `minichessoutput1.txt` in the same direc
   - `write_to_file(text)`: Writes text to both console and output file
   - `display_board(game_state)`: Displays the current board state
   - `is_valid_move(game_state, move)`: Checks if a move is valid
+  - `is_straight_or_diagonal_move(start, end, board)`: Checks if a move is a valid straight or diagonal move
+  - `is_diagonal_move(start, end, board)`: Checks if a move is a valid diagonal move
   - `make_move(game_state, move)`: Executes a move on the board
   - `parse_input(move)`: Converts user input to board coordinates
   - `play()`: Main game loop
@@ -26,3 +28,4 @@ The game generates an output file named `minichessoutput1.txt` in the same direc
 ## Notes
 - Enter moves in the format "B2 B3" (from square to square)
 - Type 'exit' to quit the game at any time
+- `is_straight_or_diagonal_move` and `is_diagonal_move` are helper functions used by `is_valid_move` to check the validity of moves for pieces like the Queen and Bishop
