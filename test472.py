@@ -193,7 +193,8 @@ class MiniChess:
             if self.no_capture_turns >= 20:
                 self.write_to_file("Draw! No captures in the last 10 turns.")
                 break
-            
+
+            self.write_to_file(f"Turn {self.turnNumber}.")
             self.write_to_file(f"{self.no_capture_turns} turns since last capture.")
             
             # Get player input
