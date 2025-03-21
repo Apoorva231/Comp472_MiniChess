@@ -7,7 +7,7 @@ human-human, human-ai, ai-human or ai-ai.
 
 ## How to Run
 1. Ensure you have Python 3.x installed on your system.
-2. Download test.py file
+2. Download minichess1.py file
 3. Open a terminal/command prompt and navigate to the directory containing `minichess1.py`.
 4. Run the command: `python minichess1.py`
 5. Follow the on-screen prompts to play the game.
