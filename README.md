@@ -1,36 +1,115 @@
-# Comp472_MiniChess
-MiniChess game for Comp472
+# Comp472 MiniChess
 
-Mini Chess is a simplified version of chess played on a 5x5 board. This implementation allows two players to play against each other, following specific rules for piece movement and game end conditions.The player can toggle between the following play modes:
-human-human, human-ai, ai-human or ai-ai. 
+MiniChess is a simplified 5x5 chess game for COMP 472. It supports human-vs-human, human-vs-AI, AI-vs-human, and AI-vs-AI games. The AI uses minimax search with optional alpha-beta pruning and one of three heuristic evaluation functions.
 
+## Project Structure
+
+```text
+.
+├── minichess.py          # Main entry point
+└── mini_chess/
+    ├── ai.py            # Heuristics, minimax, alpha-beta pruning, AI statistics
+    ├── cli.py           # Command-line prompts and arguments
+    ├── game.py          # Game loop and trace-file output
+    └── rules.py         # Board setup, move parsing, legal moves, piece movement
+```
+
+The old experimental files `minichess1.py` and `test472.py` were consolidated into this structure. `minichess1.py` was the working version because it included the AI modes, heuristics, trace output, and alpha-beta option. `test472.py` was an older human-only prototype.
 
 ## How to Run
-1. Ensure you have Python 3.x installed on your system.
-2. Download minichess1.py file
-3. Open a terminal/command prompt and navigate to the directory containing `minichess1.py`.
-4. Run the command: `python minichess1.py`
-5. Follow the on-screen prompts to play the game.
+
+From the repository root:
+
+```bash
+python3 minichess.py
+```
+
+The program will prompt for:
+
+- AI thinking time
+- Alpha-beta pruning or plain minimax
+- Play mode: `H-H`, `H-AI`, `AI-H`, or `AI-AI`
+- Heuristic: `e0`, `e1`, or `e2`
+
+You can also provide options directly:
+
+```bash
+python3 minichess.py --timeout 1 --alpha-beta --play-mode AI-AI --heuristic e0
+```
+
+Use plain minimax instead of alpha-beta:
+
+```bash
+python3 minichess.py --timeout 1 --minimax --play-mode H-AI --heuristic e1
+```
+
+## Move Format
+
+Human moves use algebraic square notation:
+
+```text
+B2 B3
+```
+
+Type `exit` during a human turn to end the game.
+
+## Game Rules
+
+MiniChess is played on a 5x5 board with files `A-E` and ranks `1-5`.
+
+Initial position:
+
+```text
+5   bK  bQ  bB  bN   .
+4    .   .  bp  bp   .
+3    .   .   .   .   .
+2    .  wp  wp   .   .
+1    .  wN  wB  wQ  wK
+
+     A   B   C   D   E
+```
+
+White moves first. Players alternate turns, and a move is legal only when the selected piece belongs to the player whose turn it is. A piece may not move onto a square occupied by another piece of the same color.
+
+Piece movement:
+
+- King: moves one square in any direction.
+- Queen: moves any number of clear squares horizontally, vertically, or diagonally.
+- Bishop: moves any number of clear squares diagonally.
+- Knight: moves in an `L` shape: two squares in one direction and one square perpendicular.
+- Pawn: moves one square forward into an empty square. White pawns move toward rank `5`; black pawns move toward rank `1`.
+- Pawn capture: captures one square diagonally forward.
+- Pawn promotion: a pawn promotes to a queen when it reaches the opposite edge of the board.
+
+Win and draw conditions:
+
+- A player wins by capturing the opponent's king.
+- The implementation does not enforce check or checkmate; kings are captured directly.
+- A draw is declared after the configured no-capture turn limit.
+- A draw is also declared after both players reach the configured maximum turn limit.
 
 ## Game Output
-The game generates an output file named 'gameTrace-{alpha_beta_str}-{timeout}-{max_turns}.txt' in the same directory where alpha_beta_str is either True or False, timeout is the ai thinking time and max_turns is turns before the game results in a draw. This file contains a log of all moves and board states throughout the game.
 
-## New Classes/Functions
-- `MiniChess`: Main class containing all game logic
-  - `write_to_file(text)`: Writes text to both console and output file
-  - `display_board(game_state)`: Displays the current board state
-  - `is_valid_move(game_state, move)`: Checks if a move is valid
-  - `is_straight_or_diagonal_move(start, end, board)`: Checks if a move is a valid straight or diagonal move
-  - `is_diagonal_move(start, end, board)`: Checks if a move is a valid diagonal move
-  - `make_move(game_state, move)`: Executes a move on the board
-  - `parse_input(move)`: Converts user input to board coordinates
-  - `play()`: Main game loop
-  - `evaluate(self, game_state, heuristic='e0')`: Heuristic evaluation function
-  - `minimax(self, game_state, depth, is_maximizing, alpha=float('-inf'), beta=float('inf'), start_time=None,time_limit=None)`: Function for minimax and alpha beta pruning algorithms. 
+Each run creates a trace file in the current working directory:
+
+```text
+gameTrace-{alpha_beta}-{timeout}-{max_turns}.txt
+```
+
+For example:
+
+```text
+gameTrace-true-1.0-20.txt
+```
+
+The trace includes the selected game parameters, board states, moves, heuristic scores, search scores, timing, and cumulative AI statistics.
+
+## Heuristics
+
+- `e0`: Material count using pawn, bishop, knight, queen, and king values.
+- `e1`: Material count plus center-control bonuses and pawn-advancement bonuses.
+- `e2`: Material count plus legal-move mobility.
 
 ## Notes
-- Enter moves in the format "B2 B3" (from square to square)
-- Type 'exit' to quit the game at any time
-- `is_straight_or_diagonal_move` and `is_diagonal_move` are helper functions used by `is_valid_move` to check the validity of moves for pieces like the Queen and Bishop
 
-- Link to github: https://github.com/Apoorva231/Comp472_MiniChess 
+- Trace files are ignored by git through `.gitignore`.
